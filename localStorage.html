@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Storage</title>
+</head>
+
+<body>
+    <section>
+        <input type="text" placeholder="storage key" id="keyInput">
+        <input type="text" placeholder="storage value" id="valueInput">
+        <button onclick="addProduct()">Store</button>
+        <ul id="productContainer">
+
+        </ul>
+    </section>
+
+
+
+
+
+
+    <script>
+        //set to storage
+        // localStorage.setItem('drink', 'coke')
+        // localStorage.setItem('money', 25)
+        // //update storage
+        // localStorage.setItem('drink', 'drinko')
+        // //remove storage
+        // localStorage.removeItem('drink')
+        // localStorage.removeItem('data')
+        // //** local storage convert every type of value to string
+        // console.log(typeof localStorage.getItem('money'))
+
+        // //storing array and object
+        // const array = [22, 33, 44, 55]
+        // const person = {
+        //     name: 'nury',
+        //     age: 20
+        // }
+        // console.log(array.toString())
+        // console.log(person.toString())
+        // localStorage.setItem('array1', array)
+        // localStorage.setItem('object1', person)
+
+        // localStorage.setItem('array', JSON.stringify(array))
+        // localStorage.setItem('object', JSON.stringify(person))
+        // const getArray = localStorage.getItem('array')
+        // // console.log(getArray[0])
+        // console.log(JSON.parse(getArray)[0])
+        // const getObject = localStorage.getItem('object')
+        // // console.log(getObject.name)
+        // console.log(JSON.parse(getObject).name)
+        // console.log(localStorage.getItem('data2'))
+
+        const addProduct = () => {
+            const nameInput = document.getElementById('keyInput')
+            const valueInput = document.getElementById('valueInput')
+            const product = nameInput.value
+            const quantity = valueInput.value
+
+            nameInput.value = ''
+            valueInput.value = ''
+
+            displayProduct(product, quantity)
+            saveProductToLocalStorage(product, quantity)
+        }
+
+        const displayProduct = (product, quantity) => {
+            const productContainer = document.getElementById('productContainer')
+            const li = document.createElement('li')
+            li.innerText = `${product}: ${quantity}`
+            productContainer.appendChild(li)
+        }
+
+        const getStoredShoppingCart = () => {
+            const savedCart = localStorage.getItem('cart')
+            let cart = {}
+            if (savedCart) {
+                cart = JSON.parse(savedCart)
+            }
+            return cart
+        }
+
+        const saveProductToLocalStorage = (product, quantity) => {
+            const cart = getStoredShoppingCart()
+            cart[product] = quantity
+            const cartStringified = JSON.stringify(cart)
+            localStorage.setItem('cart', cartStringified)
+        }
+
+        const displayProductsFromLocalStorage = () => {
+            const savedCart = getStoredShoppingCart()
+            for(const product in savedCart) {
+                const quantity = savedCart[product]
+                displayProduct(product, quantity)
+
+            }
+        }
+        displayProductsFromLocalStorage()
+
+
+    </script>
+</body>
+
+</html>
